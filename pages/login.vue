@@ -76,23 +76,21 @@
             },
             async login(){
                 if( this.validateLogin() ){
+                  try {
+                    await this.$auth.loginWith( 'laravelSanctum', {
+                      data: {
+                        email: this.form.email,
+                        password: this.form.password,
+                      }
+                    })
 
-                  await this.$auth.loginWith( 'laravelSanctum', { data: {
-                          email: this.form.email,
-                          password: this.form.password,
-                      } }  )
-                      .then( function(res){
-                        this.form.email = ''
-                        this.form.password = ''
-                        this.$store.dispatch('users/get')
-                        this.$router.push({ path: '/' })
-                      }.bind(this))
-                      .catch( function( error ){
-                          this.validations.invalidLogin.valid = false;
-                          this.validations.invalidLogin.message = 'Неверные учетные данные, пожалуйста, повторите попытку!';
-                          this.validations.email.valid = true;
-                          this.validations.password.valid = true;
-                      }.bind(this));
+                     this.$router.push('/')
+                  } catch (e) {
+                    this.validations.invalidLogin.valid = false;
+                    this.validations.invalidLogin.message = 'Неверные учетные данные, пожалуйста, повторите попытку!';
+                    this.validations.email.valid = true;
+                    this.validations.password.valid = true;
+                  }
                 }
             },
         }

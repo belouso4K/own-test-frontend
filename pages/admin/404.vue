@@ -14,20 +14,21 @@
         </div><!-- /.row -->
       </div>
     </section>
-    <section class="content">
-      <div class="container-fluid">
-        admin
+    <section class="content" style="margin-top: 150px">
+      <div class="container-fluid" style="text-align: center;">
+        <p style="font-size: 90px;font-weight: bold">404</p>
+        Такой страницы не существует
       </div>
 
     </section>
 
   </div>
 </template>
-
 <script>
 export default {
-  name: "admin",
+  name: "Admin404",
   layout: 'Admin'
+
 }
 </script>
 

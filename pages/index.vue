@@ -228,6 +228,9 @@ export default {
       ],
     }
   },
+  created() {
+    console.log(this.$auth.$state.user)
+  }
 }
 </script>
 

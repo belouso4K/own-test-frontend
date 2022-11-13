@@ -30,7 +30,10 @@
           </div>
           <p class="error-msg">{{ validations.confirm_password.message }}</p>
         </label>
-        <button>Зарегистрироваться</button>
+        <button>
+          <span v-if="!loading">Зарегистрироваться</span>
+          <Loader v-else />
+        </button>
       </form>
     </div>
   </section>
@@ -45,6 +48,7 @@
         layout: 'App',
         data(){
             return {
+              loading: false,
                 form: {
                     name: '',
                     email: '',
@@ -77,67 +81,66 @@
                 return zxcvbn(this.form.password).score
             },
         },
-        methods: {
-            validateRegistration() {
-                if( this.form.name == '' ){
-                    this.validations.name.valid = false;
-                    this.validations.name.message = 'В этом поле необходимо указать имя.'
-                }else{
-                    this.validations.name.valid = true;
-                    this.validations.name.message = '';
-                }
-                if( this.form.email == ''
-                    || !this.form.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ){
-                    this.validations.email.valid = false;
-                    this.validations.email.message = 'Необходимо ввести корректныую электронную почту.'
-                }else{
-                    this.validations.email.valid = true;
-                    this.validations.email.message = '';
-                }
-                if( this.form.password == ''|| this.passwordStrength < 4 ){
-                    this.validations.password.valid = false;
-                    this.validations.password.message = 'Необходимо ввести надежный пароль.'
-                }else{
-                    this.validations.password.valid = true;
-                    this.validations.password.message = '';
-                }
-                if( this.form.confirm_password == '' || this.form.confirm_password != this.form.password ){
-                    this.validations.confirm_password.valid =
-                        false;
-                    this.validations.confirm_password.message =
-                        'Ваши пароли должны совпадать для регистрации.';
-                }else{
-                    this.validations.confirm_password.valid = true;
-                    this.validations.confirm_password.message = '';
-                }
-
-                return (
-                    this.validations.name.valid &&
-                    this.validations.email.valid &&
-                    this.validations.password.valid &&
-                    this.validations.confirm_password.valid
-                ) ? true : false;
-            },
-            // kirill.bielousov15151515@gmail.com
-            //     3792016zxcsdfert
+      created() {
+        this.$axios.get('/sanctum/csrf-cookie')
+      },
+      methods: {
             register() {
                 if( this.validateRegistration() ){
-
-                    this.$axios.get('/api/v1/sanctum/csrf-cookie')
-                        .then( function(){
-                            this.$axios.post('/api/v1/register', this.form )
-                                .then(function( response ){
-                                    this.$auth.loginWith( 'laravelSanctum', { data: this.form } )
-                                        .then( function(){
-                                            this.$router.push({ path: '/' })
-                                        }.bind(this));
-                                }.bind(this))
-                                .catch( function( error ){
-                                    // ... Handle failure and show validation messages
-                                }.bind(this));
-                        }.bind(this));
+                  this.loading = true
+                  try {
+                    this.$axios.post('/register', this.form ).then( response => {
+                        this.$auth.loginWith( 'laravelSanctum', { data: this.form } )
+                        this.loading = false
+                        this.$router.push({ path: '/' })
+                    })
+                  } catch (err) {
+                    console.log(err)
+                    this.loading = false
+                  }
                 }
             },
+
+          validateRegistration() {
+            if( this.form.name == '' ){
+              this.validations.name.valid = false;
+              this.validations.name.message = 'В этом поле необходимо указать имя.'
+            }else{
+              this.validations.name.valid = true;
+              this.validations.name.message = '';
+            }
+            if( this.form.email == ''
+              || !this.form.email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ){
+              this.validations.email.valid = false;
+              this.validations.email.message = 'Необходимо ввести корректныую электронную почту.'
+            }else{
+              this.validations.email.valid = true;
+              this.validations.email.message = '';
+            }
+            if( this.form.password == ''|| this.passwordStrength < 4 ){
+              this.validations.password.valid = false;
+              this.validations.password.message = 'Необходимо ввести надежный пароль.'
+            }else{
+              this.validations.password.valid = true;
+              this.validations.password.message = '';
+            }
+            if( this.form.confirm_password == '' || this.form.confirm_password != this.form.password ){
+              this.validations.confirm_password.valid =
+                false;
+              this.validations.confirm_password.message =
+                'Ваши пароли должны совпадать для регистрации.';
+            }else{
+              this.validations.confirm_password.valid = true;
+              this.validations.confirm_password.message = '';
+            }
+
+            return (
+              this.validations.name.valid &&
+              this.validations.email.valid &&
+              this.validations.password.valid &&
+              this.validations.confirm_password.valid
+            ) ? true : false;
+          },
         },
         global: {
             Meter
@@ -146,5 +149,16 @@
 </script>
 
 <style scoped>
+
+.form-auth > button {
+  width: 190px;
+  height: 33px;
+}
+
+.form-auth > button img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
 
 </style>

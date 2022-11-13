@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   // mode: 'universal',
@@ -26,17 +28,25 @@ export default {
 
   ],
 
+  // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next'
+    '@nuxtjs/auth-next',
+    '@nuxtjs/dotenv',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~plugins/axios.js',
-    '~/plugins/mixins/validation.js'
+    '~/plugins/components.js',
+    '~/plugins/ownhouseAPI.js',
+    '~/plugins/axios.js',
+    '~/plugins/mixins/validation.js',
+    '~/plugins/pagination.js',
+    '~/plugins/can.js',
+    { src: '~/plugins/vue-infinite-loading.js', ssr: false},
+    { src: '~/plugins/vue-tags-input.js', ssr: false },
+    {src:'~/plugins/vue-quill-editor.js',ssr: false},
   ],
-
 
   axios: {
     baseURL: process.env.API_BASE_URL,
@@ -75,35 +85,82 @@ export default {
           },
         },
       },
+      // 'laravelSanctum': {
+      //   provider: 'laravel/sanctum',
+      //   url: process.env.API_BASE_URL,
+      //   endpoints: {
+      //     login: {
+      //       url: '/login'
+      //     },
+      //     user: {
+      //       url: '/api/v1/user'
+      //     },
+      //     logout: {
+      //       url: '/api/v1/logout'
+      //     }
+      //   }
+      // }
       'laravelSanctum': {
         provider: 'laravel/sanctum',
         url: process.env.API_BASE_URL,
         endpoints: {
           login: {
-            url: '/api/v1/login'
+            url: '/login'
           },
           user: {
             url: '/api/v1/user'
           },
           logout: {
-            url: '/api/v1/logout'
+            url: '/logout'
           }
         }
       }
     }
   },
 
+  serverMiddleware: ['~/server-middleware/swith-spa.js'],
+
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+
   ],
 
-  // Modules: https://go.nuxtjs.dev/config-modules
+  render: {
+    fallback: false
+  },
+
+  router: {
+    linkExactActiveClass: 'active',
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: "custom",
+        path: "/admin/:pkg(.*)",
+        component: resolve(__dirname, "pages/admin/404.vue"),
+      });
+    },
+  },
+
+  hooks: {
+    render: {
+      errorMiddleware(app) {
+        app.use((error, _req, _res, next) => {
+          if (error) {
+            console.log("Logged in errorMiddleware", error);
+          }
+          next(error);
+        });
+      },
+    },
+  },
 
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    splitChunks: {
+      layouts: true
+    }
   }
 }
