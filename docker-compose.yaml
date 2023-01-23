@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    container_name: nuxt-app
+    restart: always
+    ports:
+      - '3000:3000'
+    command: 'npm run start'
+
+  nginx:
+    image: nginx:1.19.0-alpine
+    volumes:
+      - ./_docker/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - '80:80'
+    depends_on:
+      - app
+
