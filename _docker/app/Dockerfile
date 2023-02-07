@@ -1,13 +1,17 @@
-FROM node:14.15.4-alpine
+FROM node:10.9.0-alpine
 
-RUN mkdir -p /var/www/nuxt-app
-WORKDIR /var/www/nuxt-app
+RUN mkdir -p /app
+COPY . /app
+WORKDIR /app
 
-COPY package*.json ./
+RUN apk update && apk upgrade
+
+COPY package.json /app
+#RUN npm rebuild
 RUN npm install
 
-COPY . .
 
+COPY . /app
 RUN npm run build
 
 EXPOSE 3000
@@ -16,4 +20,8 @@ ENV NUXT_HOST=0.0.0.0
 
 ENV NUXT_PORT=3000
 
+ENV NODE_ENV=production
+
 CMD [ "npm", "start" ]
+
+
