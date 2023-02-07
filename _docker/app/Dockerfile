@@ -1,7 +1,7 @@
-FROM node:12.16.3-alpine3.9
+FROM node:14.15.4-alpine
 
-RUN mkdir -p /var/www/dockerize-nuxt/nuxt-app
-WORKDIR /var/www/dockerize-nuxt/nuxt-app
+RUN mkdir -p /var/www/nuxt-app
+WORKDIR /var/www/nuxt-app
 
 COPY package*.json ./
 RUN npm install
