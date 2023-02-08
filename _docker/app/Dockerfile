@@ -7,11 +7,12 @@ WORKDIR /app
 RUN apk update && apk upgrade && apk add git
 
 COPY package.json /app
-#RUN npm rebuild
-RUN npm install && npm cache clean --force
 
 RUN node -v
 RUN npm -v
+
+#RUN npm rebuild
+RUN npm install && npm cache clean --force
 
 COPY . /app
 RUN npm run build
