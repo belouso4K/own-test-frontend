@@ -12,7 +12,7 @@ RUN node -v
 RUN npm -v
 
 #RUN npm rebuild
-RUN npm install --loglevel=error
+RUN npm install --legacy-peer-deps
 
 COPY . /app
 RUN npm run build
