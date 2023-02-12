@@ -12,7 +12,7 @@ RUN node -v
 RUN npm -v
 
 #RUN npm rebuild
-RUN npm cache clean --force && npm i -g npm && npm i
+RUN npm cache clear --force && npm i -g npm && npm i
 
 COPY . /app
 RUN npm run build
