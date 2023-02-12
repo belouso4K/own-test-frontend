@@ -12,7 +12,7 @@ RUN node -v
 RUN npm -v
 
 #RUN npm rebuild
-RUN export NODE_OPTIONS=--openssl-legacy-provider  && npm install --production --ignore-scripts --prefer-offline
+RUN npm install --production --ignore-scripts --prefer-offline
 COPY . /app
 RUN npm run build
 
