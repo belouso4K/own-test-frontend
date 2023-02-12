@@ -1,4 +1,4 @@
-FROM node:14.17-alpine
+FROM node:14-alpine
 
 RUN mkdir -p /app
 COPY . /app
@@ -12,7 +12,7 @@ RUN node -v
 RUN npm -v
 
 #RUN npm rebuild
-RUN npm cache clear --force && npm i -g npm && npm i
+RUN npm install --loglevel=error
 
 COPY . /app
 RUN npm run build
