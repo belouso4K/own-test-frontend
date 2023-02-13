@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:14-alpine
 
 RUN mkdir -p /app
 COPY . /app
@@ -10,9 +10,11 @@ COPY package.json /app
 
 RUN node -v
 RUN npm -v
+RUN yarn -v
 
 #RUN npm rebuild
-RUN npm install --production --ignore-scripts --prefer-offline
+RUN yarn install
+
 COPY . /app
 RUN npm run build
 
