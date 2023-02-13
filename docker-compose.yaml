@@ -7,9 +7,10 @@ services:
       dockerfile: _docker/app/Dockerfile
     container_name: nuxt-app
     restart: always
+    tty: true
     ports:
       - '3000:3000'
-    command: 'npm run start'
+    command: 'yarn start'
 
   nginx:
     image: nginx:1.19.0-alpine

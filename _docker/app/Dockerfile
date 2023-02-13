@@ -16,7 +16,7 @@ RUN yarn -v
 RUN yarn install
 
 COPY . /app
-RUN npm run build
+RUN yarn build
 
 EXPOSE 3000
 
@@ -26,6 +26,6 @@ ENV NUXT_PORT=3000
 #
 #ENV NODE_ENV=production
 
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]
 
 
