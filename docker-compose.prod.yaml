@@ -11,4 +11,10 @@ services:
     expose:
       - '3000'
     command: 'yarn start'
+    networks:
+      - frontend-network
 
+
+networks:
+  frontend-network:
+    driver: bridge
