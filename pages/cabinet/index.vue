@@ -36,7 +36,7 @@
 
           <form action="" @submit.prevent="sendForm">
             <div class="user-avatar" @click="$refs.file.click()">
-              <img :src="BASE_URL + '/storage/avatar/' + form.avatar" alt="">
+              <img :src="form.avatar" alt="">
               <input @change="onFileChange" ref="file" type="file" style="display: none">
               <div class="overlay-avatar"><i class="fa-solid fa-camera"></i></div>
             </div>
