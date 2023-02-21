@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    container_name: nuxt-app
+    restart: always
+    tty: true
+    expose:
+      - '3000'
+    command: 'yarn start'
+
