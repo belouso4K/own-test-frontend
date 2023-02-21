@@ -63,32 +63,32 @@ export default {
       home: false
     },
     strategies: {
-      'local': {
-        user: {
-          property: false
-        },
-        token: {
-          property: 'token'
-        },
-        endpoints: {
-          login: {
-            url: '/api/v1/login',
-            method: 'post',
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          },
-          logout: {
-            url: '/api/v1/logout',
-            method: 'post',
-          },
-          user: {
-            url: '/api/v1/user',
-            method: 'get'
-          },
-        },
-      },
+      // 'local': {
+      //   user: {
+      //     property: false
+      //   },
+      //   token: {
+      //     property: 'token'
+      //   },
+      //   endpoints: {
+      //     login: {
+      //       url: '/api/v1/login',
+      //       method: 'post',
+      //       withCredentials: true,
+      //       headers: {
+      //         'Content-Type': 'application/json'
+      //       },
+      //     },
+      //     logout: {
+      //       url: '/api/v1/logout',
+      //       method: 'post',
+      //     },
+      //     user: {
+      //       url: '/api/v1/user',
+      //       method: 'get'
+      //     },
+      //   },
+      // },
       // 'laravelSanctum': {
       //   provider: 'laravel/sanctum',
       //   url: process.env.API_BASE_URL,
@@ -106,13 +106,13 @@ export default {
       // }
       'laravelSanctum': {
         provider: 'laravel/sanctum',
-        url: process.env.API_BASE_URL,
+        url: process.env.API_BASE_URL + '/api/v1',
         endpoints: {
           login: {
             url: '/login'
           },
           user: {
-            url: '/api/v1/user'
+            url: '/user'
           },
           logout: {
             url: '/logout'

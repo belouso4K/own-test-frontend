@@ -86,6 +86,7 @@
 
                      this.$router.push('/')
                   } catch (e) {
+                    console.log(e)
                     this.validations.invalidLogin.valid = false;
                     this.validations.invalidLogin.message = 'Неверные учетные данные, пожалуйста, повторите попытку!';
                     this.validations.email.valid = true;
