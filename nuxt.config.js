@@ -106,7 +106,7 @@ export default {
       // }
       'laravelSanctum': {
         provider: 'laravel/sanctum',
-        url: process.env.API_BASE_URL + '/api/v1',
+        url: process.env.API_BASE_URL,
         endpoints: {
           login: {
             url: '/login'

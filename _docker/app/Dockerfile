@@ -8,10 +8,6 @@ RUN apk update && apk upgrade && apk add git
 
 COPY package.json /app
 
-RUN node -v
-RUN npm -v
-RUN yarn -v
-
 #RUN npm rebuild
 RUN yarn install
 
